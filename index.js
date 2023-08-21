@@ -1,5 +1,5 @@
 import {ethers} from "ethers";
-import { wssProvider } from "./src/constants.js";
+import { provider, wssProvider } from "./src/constants.js";
 
 const analyzeTransaction = async (tx_hash) => {
     const tx_trace = await provider.send('debug_traceTransaction', transactionHash);
