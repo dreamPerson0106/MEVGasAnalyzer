@@ -7,6 +7,8 @@ const analyzeTransaction = async (tx) => {
     const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
     const validator = confirmedBlock.miner;
 
+    console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
+
     // Start detect fee using transfer to miner
     const tx_trace = await provider.send('debug_traceTransaction', [tx_hash,{"tracer": "callTracer"}]);
     const calls = tx_trace.calls;
@@ -36,7 +38,7 @@ const main = async () => {
     wssProvider.on("block", async (blk) => {
         const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
         for(let i = 0 ; i < txs.length ; ++ i) {
-            if(txs[i].to.toLowerCase() === "0x58dF81bAbDF15276E761808E872a3838CbeCbcf9".toLowerCase()) {
+            if(txs[i].to != null && txs[i].to.toLowerCase() === "0x58dF81bAbDF15276E761808E872a3838CbeCbcf9".toLowerCase()) {
                 analyzeTransaction(txs[i]);
             }
         }
