@@ -22,12 +22,12 @@ const analyzeTransaction = async (tx) => {
     if(txReceipt.type == 0) {
         const priorityGwei = tx.gasPrice.sub(confirmedBlock.baseFeePerGas);
         const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
-        console.log(tx_hash, "Send fee using type 0",ethers.utils.formatUnits(valueToTransfer, "gwei"), "Gwei");
+        console.log(tx_hash, "Send fee using type 0",ethers.utils.formatUnits(gasUsedForMiner, "gwei"), "Gwei");
     }
     if(txReceipt.type == 2) {
         const priorityGwei = tx.maxFeePerGas.sub(confirmedBlock.baseFeePerGas).gt(tx.maxPriorityFeePerGas) ? tx.maxPriorityFeePerGas : tx.maxFeePerGas.sub(confirmedBlock.baseFeePerGas);
         const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
-        console.log(tx_hash, "Send fee using type 2",ethers.utils.formatUnits(valueToTransfer, "gwei"), "Gwei");
+        console.log(tx_hash, "Send fee using type 2",ethers.utils.formatUnits(gasUsedForMiner, "gwei"), "Gwei");
     }
 }
 
