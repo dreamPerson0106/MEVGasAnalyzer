@@ -12,6 +12,8 @@ const analyzeTransaction = async (tx_hash) => {
         const to = calls[i].to;
         if(to.toLowerCase() == validator.toLowerCase()) {
             console.log("We detect transfer to miner.");
+            const valueToTransfer = ethers.BigNumber.from(calls[i].value);
+            console.log(ethers.utils.formatEther(valueToTransfer));
         }
     }
 }
