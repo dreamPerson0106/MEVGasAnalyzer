@@ -3,13 +3,17 @@ import { provider, wssProvider } from "./src/constants.js";
 
 const analyzeTransaction = async (tx_hash) => {
     const txReceipt = await provider.getTransactionReceipt(tx_hash);
+    console.log(txReceipt);
     const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
+    console.log(confirmedBlock);
     const validator = confirmedBlock.miner;
+    console.log(validator);
 
     const tx_trace = await provider.send('debug_traceTransaction', [tx_hash,{"tracer": "callTracer"}]);
     const calls = tx_trace.calls;
     for(let i = 0 ; i < calls.length ; ++ i) {
         const to = calls[i].to;
+        console.log(to);
         if(to == validator) {
             console.log("We detect transfer to miner.");
         }
