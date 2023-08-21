@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "ethers": "^6.7.1"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
