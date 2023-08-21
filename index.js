@@ -2,7 +2,7 @@ import {ethers} from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
 
 const analyzeTransaction = async (tx_hash) => {
-    const tx_trace = await provider.send('debug_traceTransaction', transactionHash);
+    const tx_trace = await provider.send('debug_traceTransaction', tx_hash);
     console.log(tx_trace);
 }
 
