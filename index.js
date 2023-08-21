@@ -2,8 +2,18 @@ import {ethers} from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
 
 const analyzeTransaction = async (tx_hash) => {
+    const txReceipt = await provider.getTransactionReceipt(tx_hash);
+    const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
+    const validator = confirmedBlock.miner;
+
     const tx_trace = await provider.send('debug_traceTransaction', [tx_hash,{"tracer": "callTracer"}]);
-    console.log(tx_trace);
+    const calls = tx_trace.calls;
+    for(let i = 0 ; i < calls.length ; ++ i) {
+        const to = calls[i].to;
+        if(to == validator) {
+            console.log("We detect transfer to miner.");
+        }
+    }
 }
 
 const main = async () => {
