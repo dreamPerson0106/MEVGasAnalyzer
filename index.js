@@ -24,12 +24,12 @@ const analyzeTransaction = async (tx) => {
     if(txReceipt.type == 0) {
         const priorityGwei = tx.gasPrice.sub(confirmedBlock.baseFeePerGas);
         const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
-        console.log("Send fee using type 0",ethers.utils.formatUnits(gasUsedForMiner, "gwei"), "Gwei");
+        console.log("Send fee using type 0",ethers.utils.formatEther(gasUsedForMiner), "eth");
     }
     if(txReceipt.type == 2) {
         const priorityGwei = tx.maxFeePerGas.sub(confirmedBlock.baseFeePerGas).gt(tx.maxPriorityFeePerGas) ? tx.maxPriorityFeePerGas : tx.maxFeePerGas.sub(confirmedBlock.baseFeePerGas);
         const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
-        console.log("Send fee using type 2",ethers.utils.formatUnits(gasUsedForMiner, "gwei"), "Gwei");
+        console.log("Send fee using type 2",ethers.utils.formatEther(gasUsedForMiner), "eth");
     }
 }
 
@@ -39,7 +39,7 @@ const main = async () => {
         const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
         for(let i = 0 ; i < txs.length ; ++ i) {
             if(txs[i].to != null && txs[i].to.toLowerCase() === "0x58dF81bAbDF15276E761808E872a3838CbeCbcf9".toLowerCase()) {
-                analyzeTransaction(txs[i]);
+                await analyzeTransaction(txs[i]);
             }
         }
     })
