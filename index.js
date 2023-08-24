@@ -82,8 +82,8 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
-    console.log(blk);
     if(latestBlockNumber == 0) return;
+    console.log(blk);
     latestBlockNumber = blk;
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
