@@ -44,10 +44,15 @@ const main = async () => {
                 await analyzeTransaction(txs[i]);
             }
         }
+        const indexOfHashInMempool = mempoolTxs.indexOf(hash);
+        if(indexOfHashInMempool >= 0) {
+            mempoolTxs.slice(indexOfHashInMempool, indexOfHashInMempool);
+        }
     })
 
     wssProvider.on("pending", async (hash) => {
-        mempoolTxs.push(hash);
+        if(mempoolTxs.indexOf(hash) === -1)
+            mempoolTxs.push(hash);
         console.log(mempoolTxs.length);
     })
 }
