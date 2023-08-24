@@ -3,6 +3,12 @@ import { provider, wssProvider } from "./src/constants.js";
 
 let mempoolTxs = [];
 let latestBlockNumber = 0;
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  
+
 const analyzeTransaction = async (tx) => {
   const tx_hash = tx.hash;
   const txReceipt = await provider.getTransactionReceipt(tx_hash);
@@ -59,7 +65,7 @@ const analyzeTransaction = async (tx) => {
     // );
   }
 
-  if(latestBlockNumber != 0) {
+  if(latestBlockNumber > 1) {
     console.log(
         "Tx hash:",
         tx_hash,
@@ -75,8 +81,11 @@ const analyzeTransaction = async (tx) => {
 
 const main = async () => {
   console.log("Start analyzing transaction gas fees");
+
   wssProvider.on("block", async (blk) => {
+    await sleep(5000);
     console.log(blk);
+    if(latestBlockNumber == 0) return;
     latestBlockNumber = blk;
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
@@ -96,6 +105,9 @@ const main = async () => {
   wssProvider.on("pending", async (hash) => {
     if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
   });
+
+  await sleep(20000);
+  latestBlockNumber = 1;
 };
 
 main();
