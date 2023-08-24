@@ -105,7 +105,7 @@ const main = async () => {
   });
 
   await sleep(20000);
-  console.log("Start analyzing transaction gas fees");
+  console.log("Start analyzing MEV txs");
   latestBlockNumber = 1;
 };
 
