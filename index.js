@@ -17,10 +17,13 @@ const analyzeTransaction = async (tx) => {
     { tracer: "callTracer" },
   ]);
   const calls = tx_trace.calls;
+  let feeInEther = ethers.constants.Zero;
+  let feeInGwei = ethers.constants.Zero;
   for (let i = 0; i < calls.length; ++i) {
     const to = calls[i].to;
     if (to.toLowerCase() == validator.toLowerCase()) {
       const valueToTransfer = ethers.BigNumber.from(calls[i].value);
+      feeInEther = feeInEther.add(valueToTransfer);
       console.log(
         "Send fee using transfer",
         ethers.utils.formatEther(valueToTransfer),
@@ -33,6 +36,7 @@ const analyzeTransaction = async (tx) => {
   if (txReceipt.type == 0) {
     const priorityGwei = tx.gasPrice.sub(confirmedBlock.baseFeePerGas);
     const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
+    feeInGwei = feeInGwei.add(gasUsedForMiner);
     console.log(
       "Send fee using type 0",
       ethers.utils.formatEther(gasUsedForMiner),
@@ -46,12 +50,15 @@ const analyzeTransaction = async (tx) => {
       ? tx.maxPriorityFeePerGas
       : tx.maxFeePerGas.sub(confirmedBlock.baseFeePerGas);
     const gasUsedForMiner = priorityGwei.mul(txReceipt.gasUsed);
+    feeInGwei = feeInGwei.add(gasUsedForMiner);
     console.log(
       "Send fee using type 2",
       ethers.utils.formatEther(gasUsedForMiner),
       "eth"
     );
   }
+
+  console.log("Tx hash:", tx_hash, "Success?:", txReceipt.status != 0 ? "✔" : "X", "fee in Ether:", ethers.utils.parseEther(feeInEther), "fee in Gwei:", ethers.utils.parseEther(feeInGwei));
 };
 
 const main = async () => {
@@ -59,14 +66,10 @@ const main = async () => {
   wssProvider.on("block", async (blk) => {
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
-      if (
-        txs[i].to != null &&
-        txs[i].to.toLowerCase() ===
-          "0x58dF81bAbDF15276E761808E872a3838CbeCbcf9".toLowerCase()
-      ) {
+        const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+        if (txs[i].to != null && indexOfHashInMempool === -1) {
         await analyzeTransaction(txs[i]);
       }
-      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (indexOfHashInMempool >= 0) {
         mempoolTxs = mempoolTxs.slice(
           indexOfHashInMempool,
