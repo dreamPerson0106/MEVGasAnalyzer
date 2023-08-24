@@ -64,6 +64,7 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   console.log("Start analyzing transaction gas fees");
   wssProvider.on("block", async (blk) => {
+    console.log(blk);
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
         const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
@@ -81,7 +82,6 @@ const main = async () => {
 
   wssProvider.on("pending", async (hash) => {
     if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
-    console.log(mempoolTxs.length);
   });
 };
 
