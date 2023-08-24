@@ -104,7 +104,7 @@ const main = async () => {
     if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
   });
 
-  await sleep(20000);
+  await sleep(100000);
   console.log("Start analyzing MEV txs");
   latestBlockNumber = 1;
 };
