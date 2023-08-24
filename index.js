@@ -58,7 +58,16 @@ const analyzeTransaction = async (tx) => {
     );
   }
 
-  console.log("Tx hash:", tx_hash, "Success?:", txReceipt.status != 0 ? "✔" : "X", "fee in Ether:", ethers.utils.parseEther(feeInEther), "fee in Gwei:", ethers.utils.parseEther(feeInGwei));
+  console.log(
+    "Tx hash:",
+    tx_hash,
+    "Success?:",
+    txReceipt.status != 0 ? "✔" : "X",
+    "fee in Ether:",
+    ethers.utils.parseEther(feeInEther.toString()),
+    "fee in Gwei:",
+    ethers.utils.parseEther(feeInGwei.toString())
+  );
 };
 
 const main = async () => {
@@ -67,9 +76,9 @@ const main = async () => {
     console.log(blk);
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
-        const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-        if (txs[i].to != null && indexOfHashInMempool === -1) {
-        await analyzeTransaction(txs[i]);
+      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+      if (txs[i].to != null && indexOfHashInMempool === -1) {
+        analyzeTransaction(txs[i]);
       }
       if (indexOfHashInMempool >= 0) {
         mempoolTxs = mempoolTxs.slice(
