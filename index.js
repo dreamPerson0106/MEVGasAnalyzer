@@ -43,11 +43,11 @@ const main = async () => {
             if(txs[i].to != null && txs[i].to.toLowerCase() === "0x58dF81bAbDF15276E761808E872a3838CbeCbcf9".toLowerCase()) {
                 await analyzeTransaction(txs[i]);
             }
-        }
-        const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-        if(indexOfHashInMempool >= 0) {
-            mempoolTxs.slice(indexOfHashInMempool, indexOfHashInMempool);
-        }
+            const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+            if(indexOfHashInMempool >= 0) {
+                mempoolTxs.slice(indexOfHashInMempool, indexOfHashInMempool);
+            }
+            }
     })
 
     wssProvider.on("pending", async (hash) => {
