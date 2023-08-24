@@ -17,6 +17,7 @@ const analyzeTransaction = async (tx) => {
     { tracer: "callTracer" },
   ]);
   const calls = tx_trace.calls;
+  if(calls === undefined) return;
   let feeInEther = ethers.constants.Zero;
   let feeInGwei = ethers.constants.Zero;
   for (let i = 0; i < calls.length; ++i) {
