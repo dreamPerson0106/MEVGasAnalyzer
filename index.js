@@ -1,6 +1,8 @@
 import {ethers} from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
 
+let mempoolTxs = [];
+
 const analyzeTransaction = async (tx) => {
     const tx_hash = tx.hash;
     const txReceipt = await provider.getTransactionReceipt(tx_hash);
@@ -42,6 +44,11 @@ const main = async () => {
                 await analyzeTransaction(txs[i]);
             }
         }
+    })
+
+    wssProvider.on("pending", async (hash) => {
+        mempoolTxs.push(hash);
+        console.log(mempoolTxs.length);
     })
 }
 
