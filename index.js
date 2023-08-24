@@ -80,8 +80,6 @@ const analyzeTransaction = async (tx) => {
 };
 
 const main = async () => {
-  console.log("Start analyzing transaction gas fees");
-
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
     console.log(blk);
@@ -107,7 +105,7 @@ const main = async () => {
   });
 
   await sleep(20000);
-  console.log("Start to detect MEV txs");
+  console.log("Start analyzing transaction gas fees");
   latestBlockNumber = 1;
 };
 
