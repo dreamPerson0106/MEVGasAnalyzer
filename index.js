@@ -1,5 +1,8 @@
 import { ethers } from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
+var DomParser = require('dom-parser');
+import fetch from 'node-fetch';
+
 
 let mempoolTxs = [];
 
