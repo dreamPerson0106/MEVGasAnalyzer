@@ -78,7 +78,7 @@ const main = async () => {
     for (let i = 0; i < txs.length; ++i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (txs[i].to != null && indexOfHashInMempool === -1) {
-        analyzeTransaction(txs[i]);
+        await analyzeTransaction(txs[i]);
       }
       if (indexOfHashInMempool >= 0) {
         mempoolTxs = mempoolTxs.slice(
