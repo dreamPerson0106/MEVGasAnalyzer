@@ -107,6 +107,7 @@ const main = async () => {
   });
 
   await sleep(20000);
+  console.log("Start to detect MEV txs");
   latestBlockNumber = 1;
 };
 
