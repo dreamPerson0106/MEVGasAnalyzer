@@ -5,9 +5,8 @@ let mempoolTxs = [];
 let latestBlockNumber = 0;
 
 function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-  
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const analyzeTransaction = async (tx) => {
   const tx_hash = tx.hash;
@@ -15,7 +14,13 @@ const analyzeTransaction = async (tx) => {
   const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
   const validator = confirmedBlock.miner;
 
-//   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
+  const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
+  const responseText = response.text();
+  const parser = new DOMParser();
+  const htmlDocument = parser.parseFromString(data, "text/html");
+  const siteComponent = htmlDocument.querySelector("#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child").textContent.indexOf("Confirmed");
+  console.log(siteComponent);
+  //   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
 
   // Start detect fee using transfer to miner
   const tx_trace = await provider.send("debug_traceTransaction", [
@@ -23,7 +28,7 @@ const analyzeTransaction = async (tx) => {
     { tracer: "callTracer" },
   ]);
   const calls = tx_trace.calls;
-  if(calls === undefined) return;
+  if (calls === undefined) return;
   let feeInEther = ethers.constants.Zero;
   let feeInGwei = ethers.constants.Zero;
   for (let i = 0; i < calls.length; ++i) {
@@ -31,11 +36,11 @@ const analyzeTransaction = async (tx) => {
     if (to.toLowerCase() == validator.toLowerCase()) {
       const valueToTransfer = ethers.BigNumber.from(calls[i].value);
       feeInEther = feeInEther.add(valueToTransfer);
-    //   console.log(
-    //     "Send fee using transfer",
-    //     ethers.utils.formatEther(valueToTransfer),
-    //     "eth"
-    //   );
+      //   console.log(
+      //     "Send fee using transfer",
+      //     ethers.utils.formatEther(valueToTransfer),
+      //     "eth"
+      //   );
     }
   }
 
@@ -65,16 +70,16 @@ const analyzeTransaction = async (tx) => {
     // );
   }
 
-  if(latestBlockNumber > 1) {
+  if (latestBlockNumber > 1) {
     console.log(
-        "Tx hash:",
-        tx_hash,
-        "Success?:",
-        txReceipt.status != 0 ? "✔" : "X",
-        "fee in Ether:",
-        ethers.utils.formatEther(feeInEther),
-        "fee in Gwei:",
-        ethers.utils.formatEther(feeInGwei)
+      "Tx hash:",
+      tx_hash,
+      "Success?:",
+      txReceipt.status != 0 ? "✔" : "X",
+      "fee in Ether:",
+      ethers.utils.formatEther(feeInEther),
+      "fee in Gwei:",
+      ethers.utils.formatEther(feeInGwei)
     );
   }
 };
@@ -82,7 +87,7 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
-    if(latestBlockNumber == 0) return;
+    if (latestBlockNumber == 0) return;
     console.log(blk);
     latestBlockNumber = blk;
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
