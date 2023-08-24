@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 var DomParser = require('dom-parser');
 import fetch from 'node-fetch';
-
+const parser = new DOMParser();
 
 let mempoolTxs = [];
 
@@ -20,7 +20,7 @@ const analyzeTransaction = async (tx) => {
 
   const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const responseText = response.text();
-  const parser = new DOMParser();
+  
   const htmlDocument = parser.parseFromString(responseText, "text/html");
   const siteComponent = htmlDocument
     .querySelector(
