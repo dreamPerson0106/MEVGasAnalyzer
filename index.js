@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
 
 let mempoolTxs = [];
-let latestBlockNumber = 0;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -17,8 +16,12 @@ const analyzeTransaction = async (tx) => {
   const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const responseText = response.text();
   const parser = new DOMParser();
-  const htmlDocument = parser.parseFromString(data, "text/html");
-  const siteComponent = htmlDocument.querySelector("#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child").textContent.indexOf("Confirmed");
+  const htmlDocument = parser.parseFromString(responseText, "text/html");
+  const siteComponent = htmlDocument
+    .querySelector(
+      "#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child"
+    )
+    .textContent.indexOf("Confirmed");
   console.log(siteComponent);
   //   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
 
@@ -70,26 +73,24 @@ const analyzeTransaction = async (tx) => {
     // );
   }
 
-  if (latestBlockNumber > 1) {
-    console.log(
-      "Tx hash:",
-      tx_hash,
-      "Success?:",
-      txReceipt.status != 0 ? "✔" : "X",
-      "fee in Ether:",
-      ethers.utils.formatEther(feeInEther),
-      "fee in Gwei:",
-      ethers.utils.formatEther(feeInGwei)
-    );
-  }
+  console.log(
+    "Tx hash:",
+    tx_hash,
+    "Success?:",
+    txReceipt.status != 0 ? "✔" : "X",
+    "fee in Ether:",
+    ethers.utils.formatEther(feeInEther),
+    "fee in Gwei:",
+    ethers.utils.formatEther(feeInGwei)
+  );
 };
 
 const main = async () => {
+  console.log("Start analyzing MEV txs");
+
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
-    if (latestBlockNumber == 0) return;
     console.log(blk);
-    latestBlockNumber = blk;
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
@@ -108,10 +109,6 @@ const main = async () => {
   wssProvider.on("pending", async (hash) => {
     if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
   });
-
-  await sleep(100000);
-  console.log("Start analyzing MEV txs");
-  latestBlockNumber = 1;
 };
 
 main();
