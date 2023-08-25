@@ -8,6 +8,8 @@ const https = require('https');
 const http = require('http');
 const cheerio = require('cheerio');
 
+const puppeteer = require('puppeteer');
+
 
 let mempoolTxs = [];
 
@@ -53,6 +55,7 @@ const analyzeTransaction = async (tx) => {
       console.error(error);
     });
   req.end();
+
 
   // https.get(url, response => {
   //   let data = '';
@@ -134,6 +137,13 @@ const analyzeTransaction = async (tx) => {
 
 const main = async () => {
   console.log("Start analyzing MEV txs");
+
+  
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto('https://etherscan.io/tx/0x86ea8644433f0d4b0bb282774f38039692387041e6441931c942fd702b352e79');
+    console.log(page.content);
+    await browser.close();
 
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
