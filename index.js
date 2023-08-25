@@ -23,7 +23,19 @@ const analyzeTransaction = async (tx) => {
   // const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const url = `https://etherscan.io/tx/${tx_hash}`;
 
-  https.get(url, response => {
+  const options = {
+    host: 'etherscan.io',
+      port: '80',
+      path: `/tx/${tx_hash}`,
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(post_data)
+      }
+  }
+
+  https.request(options, response => {
     let data = '';
   
     response.on('data', chunk => {
@@ -36,9 +48,24 @@ const analyzeTransaction = async (tx) => {
       const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child');
       console.log(siteComponent.length);
     });
-  }).on('error', error => {
-    console.error(error);
   });
+
+  // https.get(url, response => {
+  //   let data = '';
+  
+  //   response.on('data', chunk => {
+  //     data += chunk;
+  //   });
+  
+  //   response.on('end', () => {
+  //     console.log(data);
+  //     const $ = cheerio.load(data);
+  //     const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child');
+  //     console.log(siteComponent.length);
+  //   });
+  // }).on('error', error => {
+  //   console.error(error);
+  // });
   //   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
 
   // Start detect fee using transfer to miner
