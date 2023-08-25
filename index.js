@@ -31,6 +31,7 @@ const analyzeTransaction = async (tx) => {
     });
   
     response.on('end', () => {
+      console.log(data);
       const $ = cheerio.load(data);
       const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child');
       console.log(siteComponent.length);
