@@ -147,7 +147,7 @@ const main = async () => {
   puppeteer.use(StealthPlugin());
 
   puppeteer
-    .launch({ headless: false, executablePath: executablePath() })
+    .launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'], executablePath: executablePath() })
     .then(async (browser) => {
       const page = await browser.newPage();
       await page.goto(
