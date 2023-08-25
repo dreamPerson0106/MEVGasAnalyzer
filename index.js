@@ -26,7 +26,6 @@ const analyzeTransaction = async (tx) => {
     .window.document.querySelector(
       "#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child"
     )
-    .textContent.indexOf("Confirmed");
   console.log(siteComponent);
   //   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
 
