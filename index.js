@@ -30,8 +30,9 @@ const analyzeTransaction = async (tx) => {
       path: `/tx/${tx_hash}`,
       method: 'GET',
       headers: {
+        'Cookie': 'displaymode=dark; etherscan_address_format=0; etherscan_datetime_format=UTC; etherscan_settings=x0:1|x1:1|x2:en|x3:USD|x4:0|x5:0|x6:ENS|x7:UTC|x8:1; CultureInfo=en; __stripe_mid=9b401b31-27de-44b2-ae36-6bc1a958f27848743e; etherscan_cookieconsent=True; bitmedia_fid=eyJmaWQiOiIwYjJjNjE5YzhlOTEwYjI4MGQxNjBkYWMzMTdmNWVhOSIsImZpZG5vdWEiOiJmMWRjNzBiZDUwMWFmMzBiMDIyODQ0MTZlNjM5MzE2YiJ9; _ga=GA1.1.70512955.1690950419; ASP.NET_SessionId=adkmgfe1dgr3h3htzugswyw3; etherscan_pwd=4792:Qdxb:29xiH0wXNeFfqV+qt5UAUIdMf6Faa9cmky4Z2a45KUQ=; etherscan_userid=DreamPerson0106; etherscan_autologin=True; __cflb=0H28vPcoRrcznZcNZSuFrvaNdHwh857bnso7roPCUmi; cf_clearance=vznZeZFiNGF43TzLmEy7YuXuUnqw44c8d92aXi0LBDM-1692943299-0-1-ba6f4700.1bb4a04c.3a83a946-0.2.1692943299; _ga_NHZNQE2B8K=GS1.1.1692943357.25.1.1692943363.0.0.0; _ga_T1JC9RNQXV=GS1.1.1692943367.107.1.1692945750.0.0.0',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-          'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
   }
 
