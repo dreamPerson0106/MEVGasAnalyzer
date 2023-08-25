@@ -33,7 +33,7 @@ const analyzeTransaction = async (tx) => {
     response.on('end', () => {
       const $ = cheerio.load(data);
       const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child');
-      console.log(siteComponent);
+      console.log(siteComponent.length);
     });
   }).on('error', error => {
     console.error(error);
