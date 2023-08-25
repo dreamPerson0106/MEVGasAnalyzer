@@ -47,7 +47,9 @@ const analyzeTransaction = async (tx) => {
       const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child');
       console.log(siteComponent.length);
     });
-  });
+  }).on('error', error => {
+      console.error(error);
+    });
   req.end();
 
   // https.get(url, response => {
