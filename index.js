@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { provider, wssProvider } from "./src/constants.js";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-var DomParser = require('dom-parser');
 import fetch from 'node-fetch';
 const parser = new DOMParser();
 
