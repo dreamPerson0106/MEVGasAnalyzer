@@ -3,8 +3,8 @@ import { provider, wssProvider } from "./src/constants.js";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fetch from 'node-fetch';
-var DomParser = require('dom-parser');
-const parser = new DomParser();
+const jsdom = require("jsdom");
+
 
 let mempoolTxs = [];
 
@@ -21,9 +21,9 @@ const analyzeTransaction = async (tx) => {
   const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const responseText = response.text();
   
-  const htmlDocument = parser.parseFromString(responseText, "text/html");
+  const htmlDocument = new jsdom.JSDOM(responseText, "text/html");
   const siteComponent = htmlDocument
-    .querySelector(
+    .window.document.querySelector(
       "#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child"
     )
     .textContent.indexOf("Confirmed");
