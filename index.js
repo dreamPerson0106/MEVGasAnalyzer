@@ -11,6 +11,7 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer-extra");
 const { executablePath } = require("puppeteer");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const cloudflareScraper = require("cloudflare-scraper");
 
 let mempoolTxs = [];
 
@@ -179,8 +180,7 @@ const main = async () => {
   //   // Catch error if any
   //   .catch((error) => console.log(error));
 
-
-  const cloudflareScraper = require("cloudflare-scraper");
+  
   (async () => { 
     try { 
       // Send Get request to the target website 
