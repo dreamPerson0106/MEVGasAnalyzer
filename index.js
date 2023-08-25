@@ -34,9 +34,7 @@ const analyzeTransaction = async (tx) => {
       }
   }
 
-  console.log(options);
-
-  https.request(options, response => {
+  var req = https.request(options, response => {
     let data = '';
   
     response.on('data', chunk => {
@@ -50,6 +48,7 @@ const analyzeTransaction = async (tx) => {
       console.log(siteComponent.length);
     });
   });
+  req.end();
 
   // https.get(url, response => {
   //   let data = '';
