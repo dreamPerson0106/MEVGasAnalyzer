@@ -143,7 +143,9 @@ const main = async () => {
   const page = await browser.newPage();
   const url = 'https://etherscan.io/tx/0x4a961ee2a00161a1c6d3d135885cf61ea6fde274e72f68798ed519efc2d36492';
   await page.goto(url, { waitUntil: 'networkidle0' });
-  const blockNumber = await page.$eval('span:contains("Block Height") + a', element => element.textContent);
+  const blockNumberElements = await page.$$('div.media-body span');
+  const blockNumberElement = blockNumberElements.find(element => element.textContent.includes('Block Height'));
+  const blockNumber = blockNumberElement.nextElementSibling.textContent.trim();
   console.log(blockNumber);
 
   wssProvider.on("block", async (blk) => {
