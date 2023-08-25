@@ -5,6 +5,7 @@ const require = createRequire(import.meta.url);
 import fetch from 'node-fetch';
 const jsdom = require("jsdom");
 const https = require('https');
+const http = require('http');
 const cheerio = require('cheerio');
 
 
@@ -34,7 +35,7 @@ const analyzeTransaction = async (tx) => {
       }
   }
 
-  var req = https.request(options, response => {
+  var req = http.request(options, response => {
     let data = '';
   
     response.on('data', chunk => {
