@@ -4,6 +4,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fetch from 'node-fetch';
 const jsdom = require("jsdom");
+const http = require('http');
+const cheerio = require('cheerio');
 
 
 let mempoolTxs = [];
@@ -18,16 +20,24 @@ const analyzeTransaction = async (tx) => {
   const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
   const validator = confirmedBlock.miner;
 
-  const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
-  const responseText = response.text();
-  console.log(responseText);
+  // const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
+  const url = `https://etherscan.io/tx/${tx_hash}`;
+
+  http.get(url, response => {
+    let data = '';
   
-  const htmlDocument = new jsdom.JSDOM(responseText, "text/html");
-  const siteComponent = htmlDocument
-    .window.document.querySelector(
-      "#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child"
-    )
-  console.log(siteComponent);
+    response.on('data', chunk => {
+      data += chunk;
+    });
+  
+    response.on('end', () => {
+      const $ = cheerio.load(data);
+      const siteComponent = $('#ContentPlaceHolder1_divTimeStamp  >  div > div:last-child > span:last-child').text();
+      console.log(siteComponent);
+    });
+  }).on('error', error => {
+    console.error(error);
+  });
   //   console.log(tx.hash, txReceipt.status != 0 ? "Success" : "Failed");
 
   // Start detect fee using transfer to miner
