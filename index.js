@@ -20,6 +20,7 @@ const analyzeTransaction = async (tx) => {
 
   const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const responseText = response.text();
+  console.log(responseText);
   
   const htmlDocument = new jsdom.JSDOM(responseText, "text/html");
   const siteComponent = htmlDocument
