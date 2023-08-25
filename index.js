@@ -182,11 +182,20 @@ const main = async () => {
   //   .catch((error) => console.log(error));
 
   
-    // Send Get request to the target website 
-    const response = await got.get("https://etherscan.io/tx/0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee"); 
-  
-    // Print out results 
-    console.log(response.body); 
+  const Humanoid = require("humanoid-js"); 
+ 
+  // Create a new humanoid instance 
+  const humanoid = new Humanoid(); 
+   
+  // Send Get request to the target website 
+  humanoid.get("https://etherscan.io/tx/0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee") 
+    .then(res => { 
+      console.log(res.body); // Print the result 
+    }) 
+    // Catch errors if any 
+    .catch(err => { 
+      console.log(err) 
+    })
   
 
   // const blockNumberElements = await page.$$("div.media-body span");

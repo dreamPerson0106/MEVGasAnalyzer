@@ -9,6 +9,7 @@
     "fetch": "^1.1.0",
     "http": "^0.0.1-security",
     "https": "^1.0.0",
+    "humanoid-js": "^1.0.1",
     "jsdom": "^22.1.0",
     "module": "^1.2.5",
     "node-fetch": "^3.3.2",
