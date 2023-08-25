@@ -139,11 +139,12 @@ const main = async () => {
   console.log("Start analyzing MEV txs");
 
   
-    const browser = await puppeteer.launch({headless: true});
-    const page = await browser.newPage();
-    await page.goto('https://etherscan.io/tx/0x86ea8644433f0d4b0bb282774f38039692387041e6441931c942fd702b352e79');
-    console.log(page.content);
-    await browser.close();
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  const url = 'https://etherscan.io/tx/0x4a961ee2a00161a1c6d3d135885cf61ea6fde274e72f68798ed519efc2d36492';
+  await page.goto(url, { waitUntil: 'networkidle0' });
+  const blockNumber = await page.$eval('span:contains("Block Height") + a', element => element.textContent);
+  console.log(blockNumber);
 
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
