@@ -11,7 +11,8 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer-extra");
 const { executablePath } = require("puppeteer");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
-const cloudflareScraper = require("cloudflare-scraper");
+import got from 'cloudflare-scraper';
+
 
 let mempoolTxs = [];
 
@@ -184,10 +185,10 @@ const main = async () => {
   (async () => { 
     try { 
       // Send Get request to the target website 
-      const response = await cloudflareScraper.get("https://etherscan.io/tx/0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee"); 
+      const response = await got.get("https://etherscan.io/tx/0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee"); 
    
       // Print out results 
-      console.log(response); 
+      console.log(response.body); 
    
       // Handle errors 
     } catch (error) { 
