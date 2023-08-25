@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fetch from 'node-fetch';
 const jsdom = require("jsdom");
-const http = require('http');
+const https = require('https');
 const cheerio = require('cheerio');
 
 
@@ -23,7 +23,7 @@ const analyzeTransaction = async (tx) => {
   // const response = await fetch(`https://etherscan.io/tx/${tx_hash}`);
   const url = `https://etherscan.io/tx/${tx_hash}`;
 
-  http.get(url, response => {
+  https.get(url, response => {
     let data = '';
   
     response.on('data', chunk => {
