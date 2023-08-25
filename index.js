@@ -139,7 +139,7 @@ const main = async () => {
   console.log("Start analyzing MEV txs");
 
   
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
     await page.goto('https://etherscan.io/tx/0x86ea8644433f0d4b0bb282774f38039692387041e6441931c942fd702b352e79');
     console.log(page.content);
