@@ -10,7 +10,9 @@
     "jsdom": "^22.1.0",
     "module": "^1.2.5",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^21.1.0"
+    "puppeteer": "^21.1.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "type": "module",
   "scripts": {
