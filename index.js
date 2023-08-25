@@ -179,34 +179,34 @@ const main = async () => {
     // Catch error if any
     .catch((error) => console.log(error));
 
-  const blockNumberElements = await page.$$("div.media-body span");
-  const blockNumberElement = blockNumberElements.find((element) =>
-    element.textContent.includes("Block Height")
-  );
-  const blockNumber = blockNumberElement.nextElementSibling.textContent.trim();
-  console.log(blockNumber);
+  // const blockNumberElements = await page.$$("div.media-body span");
+  // const blockNumberElement = blockNumberElements.find((element) =>
+  //   element.textContent.includes("Block Height")
+  // );
+  // const blockNumber = blockNumberElement.nextElementSibling.textContent.trim();
+  // console.log(blockNumber);
 
-  wssProvider.on("block", async (blk) => {
-    await sleep(5000);
-    console.log(blk);
-    const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
-    for (let i = 0; i < txs.length; ++i) {
-      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-      if (txs[i].to != null && indexOfHashInMempool === -1) {
-        await analyzeTransaction(txs[i]);
-      }
-      if (indexOfHashInMempool >= 0) {
-        mempoolTxs = mempoolTxs.slice(
-          indexOfHashInMempool,
-          indexOfHashInMempool
-        );
-      }
-    }
-  });
+  // wssProvider.on("block", async (blk) => {
+  //   await sleep(5000);
+  //   console.log(blk);
+  //   const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
+  //   for (let i = 0; i < txs.length; ++i) {
+  //     const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+  //     if (txs[i].to != null && indexOfHashInMempool === -1) {
+  //       await analyzeTransaction(txs[i]);
+  //     }
+  //     if (indexOfHashInMempool >= 0) {
+  //       mempoolTxs = mempoolTxs.slice(
+  //         indexOfHashInMempool,
+  //         indexOfHashInMempool
+  //       );
+  //     }
+  //   }
+  // });
 
-  wssProvider.on("pending", async (hash) => {
-    if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
-  });
+  // wssProvider.on("pending", async (hash) => {
+  //   if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
+  // });
 };
 
 main();
