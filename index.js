@@ -3,7 +3,8 @@ import { provider, wssProvider } from "./src/constants.js";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 import fetch from 'node-fetch';
-const parser = new DOMParser();
+var DomParser = require('dom-parser');
+const parser = new DomParser();
 
 let mempoolTxs = [];
 
