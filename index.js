@@ -34,6 +34,8 @@ const analyzeTransaction = async (tx) => {
       }
   }
 
+  console.log(options);
+
   https.request(options, response => {
     let data = '';
   
