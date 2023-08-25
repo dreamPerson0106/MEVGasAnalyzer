@@ -164,20 +164,36 @@ const main = async () => {
   // console.log(await page.content());
 
   // Require axios
-  const axios = require("axios");
+  // const axios = require("axios");
 
-  // Add your API Key
-  const APIKEY = "fa98ce14caf304cfc87bb7e69efba57229244d75";
+  // // Add your API Key
+  // const APIKEY = "fa98ce14caf304cfc87bb7e69efba57229244d75";
 
-  axios({
-    // Add the APIKEY and antobit feature as paramater
-    url: `https://api.zenrows.com/v1/?apikey=${APIKEY}&url=https%3A%2F%2Fetherscan.io%2Ftx%2F0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee&antibot=true&premium_proxy=true`,
-    method: "GET",
-  })
-    // Print our result
-    .then((response) => console.log(response.data))
-    // Catch error if any
-    .catch((error) => console.log(error));
+  // axios({
+  //   // Add the APIKEY and antobit feature as paramater
+  //   url: `https://api.zenrows.com/v1/?apikey=${APIKEY}&url=https%3A%2F%2Fetherscan.io%2Ftx%2F0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee&antibot=true&premium_proxy=true`,
+  //   method: "GET",
+  // })
+  //   // Print our result
+  //   .then((response) => console.log(response.data))
+  //   // Catch error if any
+  //   .catch((error) => console.log(error));
+
+
+  const cloudflareScraper = require("cloudflare-scraper");
+  (async () => { 
+    try { 
+      // Send Get request to the target website 
+      const response = await cloudflareScraper.get("https://etherscan.io/tx/0x861cee51f6d858d149d1dfc02682db3c85e2775f937dfcb14c625e86777026ee"); 
+   
+      // Print out results 
+      console.log(response); 
+   
+      // Handle errors 
+    } catch (error) { 
+      console.log(error); 
+    } 
+  })();
 
   // const blockNumberElements = await page.$$("div.media-body span");
   // const blockNumberElement = blockNumberElements.find((element) =>
