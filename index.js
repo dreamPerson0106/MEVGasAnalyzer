@@ -14,7 +14,7 @@ const analyzeTransaction = async (tx) => {
   const confirmedBlock = await provider.getBlock(txReceipt.blockNumber);
   const validator = confirmedBlock.miner;
 
-  const responseOfEtherscan = await axios.get(`http://127.0.0.1:5000/${tx_hash}`);
+  const responseOfEtherscan = await axios.get(`http://65.109.109.169:5000/${tx_hash}`);
   console.log(responseOfEtherscan.data);
   if(responseOfEtherscan.data.status == true) return;
 
