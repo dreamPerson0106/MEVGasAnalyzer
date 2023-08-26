@@ -15,6 +15,7 @@ const analyzeTransaction = async (tx) => {
   const validator = confirmedBlock.miner;
 
   const responseOfEtherscan = await axios.get(`http://127.0.0.1:5000/${tx_hash}`);
+  if(responseOfEtherscan.data.status === true) return;
 
   // Start detect fee using transfer to miner
   const tx_trace = await provider.send("debug_traceTransaction", [
