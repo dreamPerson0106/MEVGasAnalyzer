@@ -15,7 +15,7 @@ const analyzeTransaction = async (tx) => {
   const validator = confirmedBlock.miner;
 
   const responseOfEtherscan = await axios.get(`http://65.109.109.169:5000/${tx_hash}`);
-  console.log(responseOfEtherscan.data);
+  console.log(responseOfEtherscan);
   if(responseOfEtherscan.data.status == true) {
     console.log("This is not a MEV tx!");
     return;
