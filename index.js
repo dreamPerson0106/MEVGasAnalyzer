@@ -73,8 +73,7 @@ const analyzeTransaction = async (tx) => {
     "fee in Ether:",
     ethers.utils.formatEther(feeInEther),
     "fee in Gwei:",
-    ethers.utils.formatEther(feeInGwei),
-    responseOfEtherscan
+    ethers.utils.formatEther(feeInGwei)
   );
 };
 
