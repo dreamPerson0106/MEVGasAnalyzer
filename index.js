@@ -81,29 +81,29 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   console.log("Start analyzing MEV txs");
 
-  analyzeTransaction(await wssProvider.getTransaction("0x3c64cfc9ee797f98f99c217bed976b0d6e80e2f132345ecdeaa9db85497f72be"));
+  // analyzeTransaction(await wssProvider.getTransaction("0x3c64cfc9ee797f98f99c217bed976b0d6e80e2f132345ecdeaa9db85497f72be"));
 
-  // wssProvider.on("block", async (blk) => {
-  //   await sleep(5000);
-  //   console.log(blk);
-  //   const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
-  //   for (let i = 0; i < txs.length; ++i) {
-  //     const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-  //     if (txs[i].to != null && indexOfHashInMempool === -1) {
-  //       analyzeTransaction(txs[i]);
-  //     }
-  //     if (indexOfHashInMempool >= 0) {
-  //       mempoolTxs = mempoolTxs.slice(
-  //         indexOfHashInMempool,
-  //         indexOfHashInMempool
-  //       );
-  //     }
-  //   }
-  // });
+  wssProvider.on("block", async (blk) => {
+    await sleep(5000);
+    console.log(blk);
+    const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
+    for (let i = 0; i < txs.length; ++i) {
+      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+      if (txs[i].to != null && indexOfHashInMempool === -1) {
+        analyzeTransaction(txs[i]);
+      }
+      if (indexOfHashInMempool >= 0) {
+        mempoolTxs = mempoolTxs.slice(
+          indexOfHashInMempool,
+          indexOfHashInMempool
+        );
+      }
+    }
+  });
 
-  // wssProvider.on("pending", async (hash) => {
-  //   if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
-  // });
+  wssProvider.on("pending", async (hash) => {
+    if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
+  });
 };
 
 main();
