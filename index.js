@@ -81,7 +81,7 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   console.log("Start analyzing MEV txs");
 
-  analyzeTransaction(await wssProvider.getTransaction("0x3b848d8d8fcb29e395840b52be7c967c145a710d0639108626025fb34328f4f7"));
+  analyzeTransaction(await wssProvider.getTransaction("0x33ec5a32e92aa201bc499c42d5f57bd1297a20757e2cdace94e429374e234240"));
 
   wssProvider.on("block", async (blk) => {
     await sleep(5000);
