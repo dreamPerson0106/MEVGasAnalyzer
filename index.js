@@ -97,7 +97,6 @@ const main = async () => {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (txs[i].data != "0x" && txs[i].to != null && indexOfHashInMempool < 0) {
         await analyzeTransaction(txs[i]);
-        await sleep((12000 - countOfTxNotInMempool * 400) / countOfTxNotInMempool);
       }
       if (indexOfHashInMempool >= 0) {
         mempoolTxs = mempoolTxs.slice(
