@@ -84,6 +84,7 @@ const main = async () => {
 
   let countOfTxNotInMempool = 0;
   wssProvider.on("block", async (blk) => {
+    countOfTxNotInMempool = 0;
     console.log(blk);
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
