@@ -88,11 +88,11 @@ const main = async () => {
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-      if (txs[i].to != null && indexOfHashInMempool === -1) {
+      if (txs[i].data!="0x" || (txs[i].to != null && indexOfHashInMempool === -1)) {
         countOfTxNotInMempool++;
       }
     }
-    console.log(countOfTxNotInMempool);
+    console.log(countOfTxNotInMempool, mempoolTxs.length);
     for(let i = 0 ; i < txs.length ; ++ i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (txs[i].to != null && indexOfHashInMempool === -1) {
