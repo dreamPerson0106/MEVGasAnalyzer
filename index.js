@@ -82,16 +82,22 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   console.log("Start analyzing MEV txs");
 
+  let countOfTxNotInMempool = 0;
   wssProvider.on("block", async (blk) => {
-    await sleep(200);
     console.log(blk);
     const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
     for (let i = 0; i < txs.length; ++i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (txs[i].to != null && indexOfHashInMempool === -1) {
-        await analyzeTransaction(txs[i]);
-        await sleep(100);
+        countOfTxNotInMempool++;
       }
+    }
+    for(let i = 0 ; i < txs.length ; ++ i) {
+      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+      if (txs[i].to != null && indexOfHashInMempool === -1) {
+        await analyzeTransaction(txs[i]);
+        await sleep(11000 / countOfTxNotInMempool);
+      }      
       if (indexOfHashInMempool >= 0) {
         mempoolTxs = mempoolTxs.slice(
           indexOfHashInMempool,
