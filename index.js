@@ -92,6 +92,7 @@ const main = async () => {
         countOfTxNotInMempool++;
       }
     }
+    console.log(countOfTxNotInMempool);
     for(let i = 0 ; i < txs.length ; ++ i) {
       const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
       if (txs[i].to != null && indexOfHashInMempool === -1) {
