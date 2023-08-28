@@ -84,35 +84,39 @@ const analyzeTransaction = async (tx) => {
 const main = async () => {
   console.log("Start analyzing MEV txs");
 
-  wssProvider.on("block", async (blk) => {
-    let countOfTxNotInMempool = 0;
-    console.log(blk);
-    const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
-    for (let i = 0; i < txs.length; ++i) {
-      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-      if (txs[i].data != "0x" && txs[i].to != null && indexOfHashInMempool < 0) {
-        countOfTxNotInMempool++;
-      }
-    }
-    console.log(countOfTxNotInMempool, mempoolTxs.length);
-    for(let i = 0 ; i < txs.length ; ++ i) {
-      const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
-      if (txs[i].data != "0x" && txs[i].to != null && indexOfHashInMempool < 0) {
-        analyzeTransaction(txs[i]);
-        await sleep(12000 / countOfTxNotInMempool);
-      }
-      if (indexOfHashInMempool >= 0) {
-        mempoolTxs = mempoolTxs.slice(
-          indexOfHashInMempool,
-          indexOfHashInMempool
-        );
-      }
-    }
-  });
+  while(1) {
+    await axios.get(`http://65.109.109.169:5000/${tx_hash}`);
+  }
 
-  wssProvider.on("pending", async (hash) => {
-    if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
-  });
+  // wssProvider.on("block", async (blk) => {
+  //   let countOfTxNotInMempool = 0;
+  //   console.log(blk);
+  //   const txs = (await wssProvider.getBlockWithTransactions(blk)).transactions;
+  //   for (let i = 0; i < txs.length; ++i) {
+  //     const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+  //     if (txs[i].data != "0x" && txs[i].to != null && indexOfHashInMempool < 0) {
+  //       countOfTxNotInMempool++;
+  //     }
+  //   }
+  //   console.log(countOfTxNotInMempool, mempoolTxs.length);
+  //   for(let i = 0 ; i < txs.length ; ++ i) {
+  //     const indexOfHashInMempool = mempoolTxs.indexOf(txs[i].hash);
+  //     if (txs[i].data != "0x" && txs[i].to != null && indexOfHashInMempool < 0) {
+  //       analyzeTransaction(txs[i]);
+  //       await sleep(12000 / countOfTxNotInMempool);
+  //     }
+  //     if (indexOfHashInMempool >= 0) {
+  //       mempoolTxs = mempoolTxs.slice(
+  //         indexOfHashInMempool,
+  //         indexOfHashInMempool
+  //       );
+  //     }
+  //   }
+  // });
+
+  // wssProvider.on("pending", async (hash) => {
+  //   if (mempoolTxs.indexOf(hash) === -1) mempoolTxs.push(hash);
+  // });
 };
 
 main();
