@@ -85,7 +85,11 @@ const main = async () => {
   console.log("Start analyzing MEV txs");
 
   while(1) {
-    await axios.get(`http://65.109.109.169:5000/${tx_hash}`);
+    const responseOfEtherscan = await axios.get(`http://65.109.109.169:5000/0x93bbe7dcc044d70fe2d3f2f846bc25786db80f828eac9b26ce9654939cac1389`);
+    if(responseOfEtherscan.data.status == false) {
+      console.log("Error on etherscan anazlyer");
+      break;
+    }
   }
 
   // wssProvider.on("block", async (blk) => {
